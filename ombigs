@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string> // for getline (C++98 version)
+
+using namespace std;
+
+// Structure to represent a scheduled event
+struct Event {
+  string name;
+  int start_hour;
+  int start_minute;
+  int duration; // in minutes
+};
+
+// Function to display an event
+void displayEvent(const Event& event) {
+  cout << event.name << ": starts at " << event.start_hour << ":" << event.start_minute
+       << ", duration: " << event.duration << " minutes" << endl;
+}
+
+// Function to compare events by start time
+bool compareEvents(const Event& event1, const Event& event2) {
+  return (event1.start_hour < event2.start_hour) ||
+         (event1.start_hour == event2.start_minute && event1.start_minute < event2.start_minute);
+}
+
+int main() {
+  vector<Event> schedule;
+
+  // Loop to get user input for events
+  while (true) {
+    string name;
+    int start_hour, start_minute, duration;
+
+    cout << "Enter event name (or 'q' to quit): ";
+    cin >> name;
+    // Clear remaining characters in the input stream (for 'q' handling)
+    cin.ignore(100, '\n'); // Ignore up to 100 characters or newline
+
+    if (name == "q") {
+      break;
+    }
+
+    cout << "Enter start hour (0-23): ";
+    cin >> start_hour;
+    cout << "Enter start minute (0-59): ";
+    cin >> start_minute;
+    cout << "Enter duration (minutes): ";
+    cin >> duration;
+    cin.ignore(); // clear newline character
+
+    // Create event and add to schedule
+    Event event;
+    event.name = name;
+    event.start_hour = start_hour;
+    event.start_minute = start_minute;
+    event.duration = duration;
+    schedule.push_back(event);
+  }
+
+  // Sort the schedule by start time (using traditional for loop)
+  for (int i = 0; i < schedule.size() - 1; i++) {
+    for (int j = i + 1; j < schedule.size(); j++) {
+      if (compareEvents(schedule[i], schedule[j])) {
+        swap(schedule[i], schedule[j]);
+      }
+    }
+  }
+
+  // Display the organized schedule (using traditional for loop)
+  cout << "** Organized Schedule **" << endl;
+  for (int i = 0; i < schedule.size(); i++) {
+    const Event& event = schedule[i]; // Access element using index
+    displayEvent(event);
+  }
+
+  return 0;
+}
