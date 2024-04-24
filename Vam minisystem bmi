@@ -1,0 +1,54 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string name;
+    double weight, heightInMeters;
+    const double conversionFactor = 703.0; // Constant for BMI formula
+
+    // Get user input for name
+    cout << "Enter the name of the person being tested: ";
+    getline(cin, name); // Use getline to handle spaces in names
+
+    // Get user input for weight and height
+    cout << "Enter " << name << "'s weight in kilograms: ";
+    cin >> weight;
+
+    cout << "Enter " << name << "'s height in meters (e.g., 1.75 for 175 cm): ";
+    cin >> heightInMeters;
+
+    // Calculate BMI using the formula: BMI = weight / (height^2)
+    double bmi = weight / pow(heightInMeters, 2);
+
+    // Display the calculated BMI with two decimal places
+    cout << name << "'s BMI is: " << fixed << setprecision(2) << bmi << endl;
+
+    // Interpret BMI based on standard categories (informational only)
+    if (bmi < 18.5) {
+        cout << "Interpretation: Underweight" << endl;
+        cout << "Tips for a healthy weight gain:" << endl;
+        cout << "  * Consult a healthcare professional for personalized guidance." << endl;
+        cout << "  * Focus on incorporating nutrient-rich foods into your diet." << endl;
+        cout << "  * Consider strength training to build muscle mass." << endl;
+    } else if (bmi >= 18.5 && bmi <= 24.9) {
+        cout << "Interpretation: Normal weight - You're healthy!" << endl;
+        cout << "Keep up the good work by maintaining a balanced diet and regular exercise." << endl;
+    } else if (bmi >= 25 && bmi <= 29.9) {
+        cout << "Interpretation: Overweight" << endl;
+        cout << "Tips for reaching a healthy weight:" << endl;
+        cout << "  * Consult a healthcare professional for personalized guidance." << endl;
+        cout << "  * Gradually increase physical activity levels." << endl;
+        cout << "  * Make small, sustainable changes to your diet, focusing on whole foods." << endl;
+    } else {
+        cout << "Interpretation: Obese" << endl;
+        cout << "It's important to consult a healthcare professional for a personalized plan "
+             << "to improve your health." << endl;
+    }
+
+    
+    return 0;
+}
