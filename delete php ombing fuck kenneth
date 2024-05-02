@@ -20,13 +20,13 @@
         
         $id = $_GET['id'] ?? null;
         if($id !== null) {
-            $sql = "DELETE FROM users WHERE userid=$id";
+            $sql = "DELETE FROM user WHERE userid=$id";
             $result = $conn->query($sql);
-            header('location: delete.php');
+            header('location: selectuser.php');
             exit;
         }
         
-        $sql = "SELECT * FROM users";
+        $sql = "SELECT * FROM user";
         $result = $conn->query($sql);
         $x = 0;
         while($row = $result->fetch_assoc()) {
@@ -37,7 +37,7 @@
                 <td><?php echo $row['username']; ?></td>
                 <td><?php echo $row['userpass']; ?></td>
                 <td><?php echo $row['usertype']; ?></td>
-                <td><a href="delete.php?id=<?php echo $row['userid']; ?>">Delete</a></td>
+                <td><a href="selectuser.php?id=<?php echo $row['userid']; ?>">Delete</a></td>
             </tr>
         <?php
         }
@@ -46,4 +46,3 @@
 </table>
 </body>
 </html>
-
