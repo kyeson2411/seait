@@ -1,0 +1,25 @@
+delete from user where id=4;
+
+update user set civilstatus='Single';
+update user set firstname='LouisJoseph' where id=1;
+
+alter table user drop firstname;
+alter table user modify firstname firstname varchar(50); 
+alter table user add Firstname varchar(50);
+
+select * from Louis_db;(user)
+
+insert into user(Lastname, Firstname, Age, Address, Gender, Civilstatus, Contact) values('Ombing', 'LouisJoseph', 18, 'Polomolok', 'Male', 'Single', 9876654377);
+
+use Ombing_db;
+
+ desc user;
+
+ create table user(id int auto_increment primary key, Lastname Varchar(50) not null, Firstname Varchar(50) not null, Age int not null, Address Varchar(50) not null, Gender Varchar(50) not null);
+
+Use database Ombing_db;
+Use database Louis_db;
+
+Create database Ombing_db;
+
+ mysql -u root -h127.0.0.1
