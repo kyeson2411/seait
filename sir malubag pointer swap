@@ -1,0 +1,28 @@
+#include<stdio.h>
+
+int main(){
+
+	int a=50, b=100, temp;
+	int *x, *y, *z;
+	int **d, **e, **f;
+	
+	x=&a;
+	y=&b;
+	z=&temp;
+	d=&x;
+	e=&y;
+	f=&z;
+	
+	**f=**d;
+	**d=**e;
+	**e=**f;
+	
+	printf("A = %d\n",**d);
+		printf("B = %d",**e);
+	
+	return 0;
+
+	
+
+return 0;
+}
