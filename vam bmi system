@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h> // Include this header for strlen
+
+void getSuggestions(float bmi) {
+    if (bmi < 18.5) {
+        printf("You are underweight. Consider eating more nutritious, calorie-dense foods and possibly consulting a healthcare provider.\n");
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+        printf("You have a normal weight. Maintain your current lifestyle and continue eating a balanced diet and exercising regularly.\n");
+    } else if (bmi >= 25.0 && bmi < 29.9) {
+        printf("You are overweight. Consider adopting a healthier diet, increasing physical activity, and possibly consulting a healthcare provider.\n");
+    } else if (bmi >= 30.0) {
+        printf("You are obese. It's important to consult a healthcare provider for a tailored plan to reduce weight, including dietary changes and increased physical activity.\n");
+    }
+}
+
+int main() {
+    char name[50];
+    int age;
+    float weight, height_cm, height_m, bmi;
+    char choice;
+
+    // Get user name
+    printf("Enter your name: ");
+    fgets(name, sizeof(name), stdin);
+
+    // Remove trailing newline character from the name
+    size_t len = strlen(name);
+    if (len > 0 && name[len-1] == '\n') {
+        name[len-1] = '\0';
+    }
+
+    // Ask for age using the user's name
+    printf("What's your age, %s? ", name);
+    scanf("%d", &age);
+
+    // Ask for weight using the user's name
+    printf("Enter your weight in kilograms, %s: ", name);
+    scanf("%f", &weight);
+
+    // Ask for height in cm using the user's name
+    printf("Enter your height in centimeters, %s: ", name);
+    scanf("%f", &height_cm);
+
+    // Convert height to meters
+    height_m = height_cm / 100;
+
+    // Calculate BMI
+    bmi = weight / (height_m * height_m);
+
+    // Display results
+    printf("\nHello %s!\n", name);
+    printf("Your age is: %d\n", age);
+    printf("Your BMI is: %.2f\n", bmi);
+
+    // Ask if the user wants to view suggestions
+    printf("Would you like to view suggestions based on your BMI? (y/n): ");
+    scanf(" %c", &choice);
+
+    // Provide suggestions if user opts in
+    if (choice == 'y' || choice == 'Y') {
+        getSuggestions(bmi);
+    } else {
+        printf("No suggestions will be shown.\n");
+    }
+
+    return 0;
+}
