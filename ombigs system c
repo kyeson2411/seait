@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure to represent a scheduled event
+struct Event {
+    char name[100];
+    int start_hour;
+    int start_minute;
+    int duration; // in minutes
+};
+
+// Function to display an event
+void displayEvent(const struct Event* event) {
+    printf("%s: starts at %02d:%02d, duration: %d minutes\n",
+           event->name, event->start_hour, event->start_minute, event->duration);
+}
+
+// Function to compare events by start time
+int compareEvents(const void* a, const void* b) {
+    struct Event* event1 = (struct Event*)a;
+    struct Event* event2 = (struct Event*)b;
+    if (event1->start_hour != event2->start_hour) {
+        return event1->start_hour - event2->start_hour;
+    }
+    return event1->start_minute - event2->start_minute;
+}
+
+int main() {
+    char scheduler_name[100];
+    int scheduler_age;
+    struct Event schedule[100]; // Assume a maximum of 100 events
+    int schedule_size = 0;
+
+    // Get the name and age of the person making the schedule
+    printf("Enter your name: ");
+    if (scanf("%99s", scheduler_name) != 1) {
+        printf("Invalid input. Exiting...\n");
+        return 1;
+    }
+
+    printf("Enter your age: ");
+    if (scanf("%d", &scheduler_age) != 1) {
+        printf("Invalid input. Exiting...\n");
+        return 1;
+    }
+
+    // Clear the input buffer
+    getchar(); // Remove the newline character left by scanf
+
+    // Loop to get user input for events
+    while (1) {
+        char name[100];
+        int start_hour, start_minute, duration;
+
+        printf("Enter event name (or 'q' to quit): ");
+        if (scanf("%99s", name) != 1) break; // read a string and check for EOF
+        if (strcmp(name, "q") == 0) {
+            break;
+        }
+
+        printf("Enter start hour (0-23): ");
+        if (scanf("%d", &start_hour) != 1) break;
+
+        printf("Enter start minute (0-59): ");
+        if (scanf("%d", &start_minute) != 1) break;
+
+        printf("Enter duration (minutes): ");
+        if (scanf("%d", &duration) != 1) break;
+
+        // Clear the input buffer
+        getchar(); // Remove the newline character left by scanf
+
+        // Create event and add to schedule
+        struct Event event;
+        strcpy(event.name, name);
+        event.start_hour = start_hour;
+        event.start_minute = start_minute;
+        event.duration = duration;
+        schedule[schedule_size++] = event;
+    }
+
+    // Sort the schedule by start time
+    qsort(schedule, schedule_size, sizeof(struct Event), compareEvents);
+
+    // Display the organized schedule
+    printf("** Organized Schedule by %s (Age: %d) **\n", scheduler_name, scheduler_age);
+    for (int i = 0; i < schedule_size; i++) {
+        displayEvent(&schedule[i]);
+    }
+
+    return 0;
+}
