@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h> 
+int main() {
+
+    srand(time(NULL));
+
+    char player1Name[50], player2Name[50];
+    int player1Move, player2Move;
+
+    
+    printf("Player 1: Enter your name: ");
+    scanf("%49s", player1Name); 
+
+    printf("Player 2: Enter your name: ");
+    scanf("%49s", player2Name); 
+
+    while (1) {
+    
+        printf("%s: Enter 'go' to throw: ", player1Name);
+        char player1Choice[10];
+        scanf("%49s", player1Choice);
+
+        if (strcmp(player1Choice, "go") != 0) {
+            printf("Invalid input. Please enter 'go'.\n");
+            continue;
+        }
+
+       
+        player1Move = rand() % 3 + 1;
+
+        
+        printf("%s: Enter 'go' to throw: ", player2Name);
+        char player2Choice[10];
+        scanf("%49s", player2Choice);
+
+        if (strcmp(player2Choice, "go") != 0) {
+            printf("Invalid input. Please enter 'go'.\n");
+            continue;
+        }
+
+   
+        player2Move = rand() % 3 + 1;
+
+       
+        printf("%s threw: ", player1Name);
+        switch (player1Move) {
+            case 1:
+                printf("Rock\n");
+                break;
+            case 2:
+                printf("Paper\n");
+                break;
+            case 3:
+                printf("Scissors\n");
+                break;
+        }
+
+        printf("%s threw: ", player2Name);
+        switch (player2Move) {
+            case 1:
+                printf("Rock\n");
+                break;
+            case 2:
+                printf("Paper\n");
+                break;
+            case 3:
+                printf("Scissors\n");
+                break;
+        }
+
+        if (player1Move == player2Move) {
+            printf("It's a tie!\n");
+        } else if ((player1Move == 1 && player2Move == 3) ||
+                   (player1Move == 2 && player2Move == 1) ||
+                   (player1Move == 3 && player2Move == 2)) {
+            printf("%s wins!\n", player1Name);
+        } else {
+            printf("%s wins!\n", player2Name);
+        }
+    }
+
+    return 0;
+}
