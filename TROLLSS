@@ -1,0 +1,71 @@
+<?php include 'connection.php' ?>
+<?php
+
+
+	if (isset($_POST['submit'])) {
+
+		$user = $_POST['uname'];
+		$pass = $_POST['upass'];
+
+		$sql = "SELECT * FROM users WHERE Username = '$user' AND Password = '$pass'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if($row['Password'] == $pass){
+
+
+		header("Location: dashboard.php");
+		}else{
+
+			echo "Incorrect Credentials";
+		}
+
+	}
+
+
+
+
+		if (isset($_POST['register'])) {
+
+		$user = $_POST['uname'];
+		$pass = $_POST['upass'];
+
+		$sql = "SELECT * FROM users WHERE Username = '$user'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if(@$row['Username'] == $user){
+
+			echo "Data is Already Exist";
+	
+		}else{
+
+			$sqls = "INSERT INTO users (`Username`, `Password`) VALUES ('$user', '$pass')";
+			$stmts = $conn->prepare($sqls);
+			$stmts->execute();
+
+						echo "Data Inserted Successfully";
+		}
+	}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<form method="POST">
+	<input type="text" name="uname" placeholder="Username">
+	<input type="password" name="upass" placeholder="Password">
+	<input type="submit" name="submit" value="Login"> 
+	<input type="submit" name="register" value="Register"> 
+</form>
+
+
+</body>
+</html>
