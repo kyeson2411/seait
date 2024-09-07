@@ -1,0 +1,59 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package Stack_Activityy;
+
+import java.util.Stack;
+
+/**
+ *
+ * @author BLK4
+ */
+public class java {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+       Stack<String> browse = new Stack<>();
+        
+       
+       System.out.println("Is The Browse Stack Empty:" +browse.empty());
+       
+                browse.push("ugphone.com");
+                browse.push("facebook.com");
+                browse.push("instagram.com");
+             
+                int maxSize = 7;
+                System.out.println("Is Browse Stack Full = "+(browse.size() == maxSize));
+                int browsePosition = browse.search("ugphone.com");
+                  System.out.println("The Position Of ugphone.com In The Browse Stack Is: " +browsePosition);
+                int browsePosition1 = browse.search("facebook.com");
+                System.out.println("The Position Of facebook.com In The Browse Stack Is: " +browsePosition1);
+                int browsePosition2 = browse.search("instagram.com");
+                System.out.println("The Position Of instagram.com In The Browse Stack Is: " +browsePosition2);
+              
+                browse.push("9gag.com");
+                browse.push("x.com");
+                browse.push("twitch.com");
+                browse.push("9anime.com");
+               
+                 
+                System.out.println("Top Element of Animal Stack:" +browse.peek());
+                
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Browse Pop:" +browse.pop());
+         System.out.println("Is The Browse Stack Empty:" +browse.empty());
+       
+        
+    }
+    
+}
