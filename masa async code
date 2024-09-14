@@ -1,0 +1,30 @@
+import 'dart:async';
+
+class AsyncProgram {
+  //classname
+
+  Future<List<Map<String, dynamic>>> getUsers() async {
+
+    var username = [
+
+      {'id': 1, 'Username': 'john', 'Password': '15567'},
+
+      {'id': 2, 'Username': 'Doe', 'Password': '92312'}
+
+    ];
+
+    return username;
+  }
+
+  void displayUsers() async {
+
+    var usernames = await getUsers();
+
+    for (int i = 0; i < usernames.length; i++) {
+      var Username = usernames[i]['Username'];
+      var Password = usernames[i]['Password'];
+
+      print("Username: $Username | Password: $Password");
+    }
+  }
+}
