@@ -1,0 +1,106 @@
+<?php include 'connection.php' ?>
+
+<?php
+
+
+	if (isset($_POST['submit'])) {
+
+		$user = $_POST['uname'];
+		$pass = $_POST['upass'];
+
+		$sql = "SELECT * FROM admin WHERE Username = '$user' AND Password = '$pass'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if(@$row['Password'] == $pass){
+
+
+		header("Location: table.php");
+		}else{
+
+			echo "Incorrect Credentials";
+		}
+
+	}
+
+
+
+
+		if (isset($_POST['register'])) {
+
+		$user = $_POST['uname'];
+		$pass = $_POST['upass'];
+
+		$sql = "SELECT * FROM admin WHERE Username = '$user'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if(@$row['Username'] == $user){
+
+			echo "Data is Already Exist";
+	
+		}else{
+
+			$sqls = "INSERT INTO admin (`Username`, `Password`) VALUES ('$user', '$pass')";
+			$stmts = $conn->prepare($sqls);
+			$stmts->execute();
+
+						echo "Data Inserted Successfully";
+		}
+	}
+
+?>
+<?php
+
+
+	if (isset($_POST['submit'])) {
+
+		$user = $_POST['uname'];
+		$pass = $_POST['upass'];
+
+		$sql = "SELECT * FROM user WHERE Username = '$user' AND Password = '$pass'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if(@$row['Password'] == $pass){
+
+
+		header("Location: dashboard.php");
+		}else{
+
+			echo "Incorrect Credentials";
+		}
+
+	}
+
+
+
+
+		if (isset($_POST['register'])) {
+
+		$user = $_POST['uname'];
+		$pass = md5($_POST['upass']);
+
+		$sql = "SELECT * FROM user WHERE Username = '$user'";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if(@$row['Username'] == $user){
+
+			echo "Data is Already Exist";
+	
+		}else{
+
+			$sqls = "INSERT INTO user (`Username`, `Password`) VALUES ('$user', '$pass')";
+			$stmts = $conn->prepare($sqls);
+			$stmts->execute();
+
+						echo "Data Inserted Successfully";
+		}
+	}
+
+?>
