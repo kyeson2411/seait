@@ -1,0 +1,19 @@
+import'calculate.dart';
+import 'package:canillok_b4/async_program.dart';
+
+void main() async{
+
+  Calculate calcu = Calculate();
+
+  int add = calcu.addition(5,5);
+  int sub = calcu.sub(13,6);
+  int multi = calcu.multiply(2,5);
+  double div = calcu.divide(16,8);
+  print("The result of addition is: $add");
+  print("The result of subtraction is: $sub");
+  print("The result of multiplication is: $multi");
+  print("The result of division is: $div");
+
+  AsyncProgram ap= AsyncProgram();
+  ap.displayUsers();
+}
