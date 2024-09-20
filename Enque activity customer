@@ -1,0 +1,26 @@
+   
+      Queue<String> customer = new LinkedList<String>();
+        
+        customer.offer("Alex");
+        customer.offer("Sam");
+        customer.offer("Mica");
+        customer.offer("Ford");
+        
+        
+       
+      System.out.println("Current State of the Queque:" +customer);
+      System.out.println("Number of Customer Waiting in Line: " + customer.size());    
+       System.out.println("The First One on Line And The First To be Served is:" +customer.peek());
+        
+ 
+       customer.poll();
+       System.out.println("Alex Received Her Food");
+       System.out.println("Current State of the Queque:" +customer);
+       System.out.println("Number of Remaining Customer: " + customer.size());    
+       System.out.println("Is The Customer Queue Empty:" +customer.isEmpty());
+        customer.offer("John");
+        customer.offer("Ava");
+         
+      System.out.println("Final State of the Queque:" +customer);
+       System.out.println("Number of Remaining Customer: " + customer.size()); 
+                  
