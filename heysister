@@ -1,0 +1,39 @@
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class dacol_Queue {
+
+    public static void main(String[] args) {
+        
+        Queue<String> Customer = new LinkedList<String>();
+        
+        Customer.offer("Alex");
+        Customer.offer("Sam");
+        Customer.offer("Mica");
+        Customer.offer("Fond");
+        
+        System.out.println("the Current Queue :" +Customer);
+        System.out.println("the number of Customer waiting in line is:" +Customer.size());
+        
+        System.out.println("The Customer in line is:" + Customer.peek());
+        
+        
+        Customer.poll();
+        System.out.println("Served Customer :" +Customer);
+        
+        System.out.println("Updated Queue :" +Customer);
+        System.out.println("the number of remaininh Queue:" +Customer.size());
+        
+        System.out.println("Is the Queue empy:" +Customer.isEmpty());  
+        
+        
+        Customer.add("jhon");
+        Customer.add("Ava");
+        
+        System.out.println("the final Queue is :" +Customer);
+        System.out.println("the number of remaining Queue:" +Customer.size());
+     
+      
+    }
+    
+}
