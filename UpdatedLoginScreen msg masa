@@ -1,0 +1,121 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:lab_exam/dashboard.dart';
+
+class LoginScreen extends StatelessWidget{
+ @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginScreenHome(),
+    );
+  }
+}
+
+class LoginScreenHome extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login Screen'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text('Welcome Users!',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),),
+            SizedBox(height: 20,),
+            Text('Please login to continue'),
+            SizedBox(height: 20,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height*0.67,
+              width: MediaQuery.of(context).size.width*0.9,
+              child: Card(
+                elevation: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 2,
+                            color: Colors.blue
+                          )
+                        ),
+                        child: CircleAvatar(
+                          //backgroundImage: AssetImage('images/flutter.png'),
+                          radius: 60,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          prefixIcon: Icon(Icons.person),
+                          border: OutlineInputBorder(
+        
+                          )
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: Icon(Icons.lock),
+                            border: OutlineInputBorder()
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            onPressed: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>Dashboard()));
+                            },
+        
+                            child: Text('Login'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white
+                            )
+                          ,),
+                      ),
+                      TextButton(
+                          onPressed: (){
+                            AwesomeDialog(
+                              context: context,
+                              dialogType: DialogType.warning,
+                              animType: AnimType.bottomSlide,
+                              title: 'Are you sure?',
+                              desc: 'Do you want to change your password?',
+                              btnCancelOnPress: (){},
+                              btnOkOnPress: (){},
+                            ).show();
+                      }, child: Text('Forgot Password?'))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Dont have an account?'),
+                TextButton(onPressed: (){
+                }, child: Text('Sign Up'))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
