@@ -8,7 +8,7 @@ class DatabaseHelper{
 
   Future<Database> get database async{
     if(_database!=null){
-      
+
       return _database!;
     }else{
       _database = await _initDb('mydb.db');
@@ -20,7 +20,7 @@ class DatabaseHelper{
     final path = join(dbDir,dbName);
     return await openDatabase(path,version: 1,onCreate: (Database db, int ver){
       db.execute(
-        '''
+          '''
         CREATE TABLE `users`(
         `id` INTEGER PRIMARY KEY AUTOINCREMENT,
         `fullname` TEXT NOT NULL,
@@ -43,4 +43,23 @@ class DatabaseHelper{
     return result.isNotEmpty;
   }
 
+  Future<int?> userLogin(String email, String password)async{
+    Database db = await instance.database;
+    List<Map<String,dynamic>> result = await db.query('users',where: 'email = ? AND password = ?',whereArgs: [email,password]);
+    if(result.isNotEmpty){
+      return result.first['id'] as int;
+    }else{
+      return null;
+    }
+  }
+  Future<Map<String,dynamic>?> getUserDetails(int userId)async{
+    Database db = await instance.database;
+    List<Map<String,dynamic>> result = await db.query('users', where: 'id = ?', whereArgs: [userId]);
+
+    if(result.isNotEmpty){
+      return result.first;
+    }else{
+      return null;
+    }
+  }
 }
