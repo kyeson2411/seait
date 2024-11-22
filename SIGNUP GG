@@ -1,0 +1,183 @@
+//import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:ombinglj_b4/database_helper.dart';
+import 'loginscreen.dart';
+
+class SignUp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      home: SignUpHome(),
+    );
+  }
+}
+class SignUpHome extends StatefulWidget{
+  @override
+  State<SignUpHome> createState() => _SignUpHomeState();
+}
+
+class _SignUpHomeState extends State<SignUpHome> {
+  var _fulnameController = TextEditingController();
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+  var _cpasswordController = TextEditingController();
+
+  void _signup()async{
+    var fullname = _fulnameController.text.trim();
+    var email = _emailController.text.trim();
+    var pass = _passwordController.text.trim();
+    var cpass = _cpasswordController.text.trim();
+
+    if(fullname.isEmpty || email.isEmpty || pass.isEmpty || cpass.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please provide input in all fields!'))
+      );
+    }else if(pass!=cpass){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Password and Confirm Password does not match!'))
+      );
+    }else{
+      bool EmailExist = await DatabaseHelper.instance.emailExist(email);
+      if(EmailExist){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('The email is already Registered, please try again!'))
+        );
+      }else{
+        Map<String, dynamic> user={
+          'fullname': fullname,
+          'email': email,
+          'password': pass
+        };
+        await DatabaseHelper.instance.insertUser(user);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Account Successfully Created!'))
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 80.0,
+        backgroundColor: Colors.lightBlue,
+        flexibleSpace: Center(
+          child: Text(
+            'SignUp Page',
+            style: TextStyle(
+              fontSize: 35,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+      body:Column(
+        children: [
+          SizedBox(
+            height: MediaQuery
+                .of(context)
+                .size
+                .height * 0.780,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.4,
+            child: Card(
+              elevation: 20,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20,),
+                    TextField(
+                      controller: _fulnameController,
+                      decoration: InputDecoration(
+                          labelText: 'First name',
+                          prefixIcon: Icon(Icons.person),
+                          border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          labelText: 'Last name',
+                          prefixIcon: Icon(Icons.person_outline),
+                          border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    TextField(
+                      controller: _cpasswordController,
+                      decoration: InputDecoration(
+                          labelText: 'Birthday',
+                          prefixIcon: Icon(Icons.cake),
+                          border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 20,),
+                    TextField(
+                      decoration: InputDecoration(
+                          labelText: 'Email',
+                          prefixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder()
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _signup();
+                          // AwesomeDialog(
+                          //   context: context,
+                          //   dialogType: DialogType.success,
+                          //   animType: AnimType.bottomSlide,
+                          //   title: 'Success',
+                          //   desc: 'You have successfully registered!',
+                          //   btnOkOnPress: () {
+                          //   },
+                          // ).show();
+                        },
+                        child: Text('Register'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen()));
+                      }, child: Text('Login'),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue),),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+          )
+        ],
+      ),
+    );
+  }
+}
