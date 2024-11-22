@@ -1,0 +1,160 @@
+//import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:appdev_1/database_helper.dart';
+import 'package:appdev_1/globals.dart';
+import 'package:flutter/material.dart';
+import 'package:appdev_1/dashboard.dart';
+import 'package:appdev_1/signup.dart';
+
+class LoginScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginScreenHome(),
+    );
+  }
+}
+
+class LoginScreenHome extends StatefulWidget{
+
+
+  @override
+  State<LoginScreenHome> createState() => _LoginScreenHomeState();
+}
+
+class _LoginScreenHomeState extends State<LoginScreenHome> {
+
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+
+  void _login()async{
+    var email = _emailController.text.trim();
+    var password = _passwordController.text.trim();
+
+    if(email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please provide inputs!'))
+      );
+    }else{
+      int? userId = await DatabaseHelper.instance.userLogin(email,password);
+      if(userId != null){
+  setUserId(userId);
+  Navigator.of(context).pushReplacement(MaterialPageRoute(builder:  (BuildContext context)=>Dashboard()));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed! Please try again!'))
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(''),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text('Welcome Users!',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),),
+            SizedBox(height: 20,),
+            Text('Please login to continue'),
+            SizedBox(height: 20,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height*0.67,
+              width: MediaQuery.of(context).size.width*0.9,
+              child: Card(
+                elevation: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 2,
+                                color: Colors.blue
+                            )
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage('imagess/vsdsvsd.jpg'),
+                          radius: 60,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      TextField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            labelText: 'Username',
+                            prefixIcon: Icon(Icons.person),
+                            border: OutlineInputBorder(
+
+                            )
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: Icon(Icons.lock),
+                            border: OutlineInputBorder()
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: (){
+                            _login();
+                          },
+
+                          child: Text('Login'),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white
+                          )
+                          ,),
+                      ),
+                      TextButton(
+                          onPressed: (){
+                            // AwesomeDialog(
+                            //   context: context,
+                            //   dialogType: DialogType.warning,
+                            //   animType: AnimType.bottomSlide,
+                            //   title: 'Are you sure?',
+                            //   desc: 'Do you want to change your password?',
+                            //   btnCancelOnPress: (){},
+                            //   btnOkOnPress: (){},
+                            // ).show();
+                          }, child: Text('Forgot Password?'))
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Dont have an account?'),
+                TextButton(
+                    onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>Signup()));
+                }, child: Text('Sign Up'))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
