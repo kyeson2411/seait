@@ -1,0 +1,209 @@
+#include <LiquidCrystal_I2C.h>
+
+// Pin configuration
+const int rowPins[4] = {2, 3, 4, 5};  
+const int colPins[4] = {6, 7, 8, 9};  
+const int buzzerPin = 10; 
+const int ledPin = 11; 
+
+// Display variables  
+int cursorCol = 0;  
+int cursorRow = 0;  
+
+// Calculation variables  
+String firstString = "";  
+String secondString = "";  
+char operators[] = {'+', '-', '*', '/'};  
+char selectedOperator = '\0';  
+bool operatorSelected = false;  
+
+// Initialize LCD  
+LiquidCrystal_I2C lcd(0x27, 16, 2);  
+
+// Keypad layout  
+char keys[4][4] = {  
+  {'1', '2', '3', '+'},  
+  {'4', '5', '6', '-'},  
+  {'7', '8', '9', '*'},  
+  {'C', '0', '=', '/'}  
+};  
+
+void setup() {  
+  // Initialize LCD  
+  lcd.init();  
+  lcd.clear();  
+  lcd.backlight();  
+  
+  // Set row pins as OUTPUT  
+  for (int i = 0; i < 4; i++) {  
+    pinMode(rowPins[i], OUTPUT);  
+    digitalWrite(rowPins[i], HIGH);  
+  }  
+  
+  // Set column pins as INPUT with pull-up resistors  
+  for (int i = 0; i < 4; i++) {  
+    pinMode(colPins[i], INPUT_PULLUP);  
+  }  
+
+   pinMode(ledPin, OUTPUT); 
+  pinMode(buzzerPin, OUTPUT);  
+  
+  // Display initial message  
+  lcd.setCursor(0, 0);  
+  lcd.print("Calculator");  
+  delay(1000);  
+  lcd.clear();  
+}  
+
+void loop() {  
+   
+  char keyPressed = getKeyPressed();  
+  
+ 
+  if (keyPressed != '\0') {  
+    soundBuzzer();
+    ledON();
+    processKey(keyPressed);  
+    delay(200);
+  }  
+}  
+
+char getKeyPressed() {  
+  for (int row = 0; row < 4; row++) {  
+    digitalWrite(rowPins[row], LOW);  
+    
+    for (int col = 0; col < 4; col++) {  
+      if (digitalRead(colPins[col]) == LOW) {  
+        digitalWrite(rowPins[row], HIGH);  
+        return keys[row][col];  
+      }  
+    }  
+    
+    digitalWrite(rowPins[row], HIGH);  
+  }  
+  
+  return '\0';  
+}  
+
+void processKey(char keyPressed) {  
+  // Clear operation  
+  if (keyPressed == 'C') {  
+    lcd.clear();  
+    firstString = "";  
+    secondString = "";  
+    operatorSelected = false;  
+    selectedOperator = '\0';  
+  }  
+  // Calculate result  
+  else if (keyPressed == '=') {  
+    calculateResult();  
+  }  
+  // Check if it's an operator  
+  else if (isOperator(keyPressed)) {  
+    if (!operatorSelected && firstString != "") {  
+      selectedOperator = keyPressed;  
+      operatorSelected = true;  
+      
+      // Display the first number and operator  
+      lcd.clear();  
+      lcd.setCursor(0, 0);  
+      lcd.print(firstString + selectedOperator);  
+    }  
+  }  
+  // Must be a number  
+  else {  
+    if (!operatorSelected) {  
+      // First number  
+      firstString += keyPressed;  
+      
+      // Display first number  
+      lcd.clear();  
+      lcd.setCursor(0, 0);  
+      lcd.print(firstString);  
+    } else {  
+      // Second number  
+      secondString += keyPressed;  
+      
+      // Display both numbers with operator  
+      lcd.clear();  
+      lcd.setCursor(0, 0);  
+      lcd.print(firstString + selectedOperator + secondString);  
+    }  
+  }  
+}  
+
+bool isOperator(char key) {  
+  for (char op : operators) {  
+    if (key == op) {  
+      return true;  
+    }  
+  }  
+  return false;  
+}  
+
+void calculateResult() {  
+  if (firstString == "" || secondString == "" || !operatorSelected) {  
+    return; // Can't calculate without two numbers and an operator  
+  }  
+  
+  float num1 = firstString.toFloat();  
+  float num2 = secondString.toFloat();  
+  float result = 0;  
+  
+  switch (selectedOperator) {  
+    case '+':  
+      result = num1 + num2;  
+      break;  
+    
+    case '-':  
+      result = num1 - num2;  
+      break;  
+    
+    case '*':  
+      result = num1 * num2;  
+      break;  
+    
+    case '/':  
+      if (num2 != 0) {  
+        result = num1 / num2;  
+      } else {  
+        lcd.clear();  
+        lcd.setCursor(0, 0);  
+        lcd.print("Error: Div by 0");  
+        delay(2000);  
+        lcd.clear();  
+        firstString = "";  
+        secondString = "";  
+        operatorSelected = false;  
+        return;  
+      }  
+      break;  
+  }  
+  
+  // Display the result  
+  lcd.clear();  
+  lcd.setCursor(0, 0);  
+  
+  // Handle integer results differently than float results  
+  if (result == (int)result) {  
+    lcd.print((int)result);  
+  } else {  
+    lcd.print(result);  
+  }  
+  
+  // Set the result as the first number for further calculations  
+  firstString = String(result);  
+  secondString = "";  
+  operatorSelected = false;  
+}  
+
+void soundBuzzer() {  
+  digitalWrite(buzzerPin, HIGH);  
+  delay(100);                     
+  digitalWrite(buzzerPin, LOW);  
+}  
+void ledON() {  
+  digitalWrite(ledPin, HIGH);  
+  delay(100);                     
+  digitalWrite(ledPin, LOW);  
+}  
