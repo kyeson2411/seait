@@ -1,0 +1,28 @@
+int inches = 0;
+int cm = 0;
+
+long readUltrasonicDistance(int triggerPin, int echoPin){
+  
+  pinMode(triggerPin, OUTPUT);
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  return pulseIn(echoPin, HIGH);
+  
+}
+
+void setup(){
+  Serial.begin(9600);
+}
+void loop(){
+  cm = 0.01723 * readUltrasonicDistance(2, 2);
+  inches = cm / 2.44;
+  Serial.print(inches);
+  Serial.print("In, ");
+  Serial.print(cm);
+  Serial.println("cm");
+  delay(200);
+}
